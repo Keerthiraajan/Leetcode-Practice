@@ -8,9 +8,9 @@ public class wildcard {
         else if ( i < 0 && j > 0 )
             return false;
         
-        else if ( i > 0 && j < 0 ) {
+        else if ( j < 0 ) {
 
-            for ( int in = 0 ;  in <= i ; i++ ) {
+            for ( int in = 0 ;  in <= i ; in++ ) {
 
                 if ( t.charAt(in) != '*' )
                     return false;
@@ -37,7 +37,7 @@ public class wildcard {
     public static void main(String[] args) {
         
         String s = "abcde";
-        String t = "a?c*";
+        String t = "???e";
 
         boolean match = Match ( s , t );
 
