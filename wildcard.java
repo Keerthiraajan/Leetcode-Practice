@@ -1,43 +1,42 @@
 public class wildcard {
     
-    public static boolean Solve ( String s , String t , int i , int j ) {
-
-        if ( i < 0 && j < 0 )
-            return true;
-        
-        else if ( i < 0 && j > 0 )
-            return false;
-        
-        else if ( j < 0 ) {
-
-            for ( int in = 0 ;  in <= i ; in++ ) {
-
-                if ( t.charAt(in) != '*' )
-                    return false;
-            }
-            return true;
-        }
-
-        if ( s.charAt( i ) == t.charAt(j) || t.charAt(j) == '?')
-            return Solve ( s , t , i - 1 , j - 1 );
-        
-        else if ( t.charAt(j) == '*' )
-            return Solve ( s , t , i , j - 1 ) || Solve ( s , t , i - 1 , j );
-        
-        else
-            return false;
-    }
     public static boolean Match ( String s , String t ) {
 
         int n = s.length();
         int m = t.length();
 
-        return Solve ( s , t , n - 1 , m - 1 );
+        boolean[][] dp = new boolean[n + 1][m + 1];
+        
+        dp[ 0 ][ 0 ] = true;
+
+        for ( int j = 1 ; j <= m ; j++ ) {
+
+            if ( t.charAt( j - 1 ) == '*' )
+                dp[ 0 ][ j ] = dp[ 0 ][ j - 1 ];
+            else   
+                dp[ 0 ][ j ] = false;
+        }
+        
+        for ( int i = 1 ; i <= n ; i++ ) {
+
+            for ( int j = 1 ; j <= m ; j++ ) {
+
+                if ( s.charAt( i - 1 ) == t.charAt(j - 1) || t.charAt(j - 1) == '?')
+                    dp[ i ][ j ] = dp[ i - 1 ][ j - 1];
+                
+                else if ( t.charAt( j - 1 ) == '*' )
+                    dp[ i ][ j ] = dp[ i ][ j - 1 ]|| dp[ i - 1 ][ j ];
+                else
+                    dp[ i ][ j ] = false;
+            }
+        }
+
+        return dp[ n ][ m ];
     }
     public static void main(String[] args) {
         
-        String s = "abcde";
-        String t = "???e";
+        String s = "aa";
+        String t = "?";
 
         boolean match = Match ( s , t );
 
